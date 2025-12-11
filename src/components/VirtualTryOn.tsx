@@ -187,6 +187,114 @@ export const VirtualTryOn = ({ selectedBox, onClose, onProceedToCheckout }: Virt
     );
   }
 
+  // Mode: Affichage des recommandations après analyse
+  if (!selectedBox && recommendedBoxes.length > 0) {
+    return (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-card">
+          <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-card z-10">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                <Sparkles className="h-6 w-6 text-primary" />
+                Vos recommandations
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Voici les box qui correspondent à votre style
+              </p>
+            </div>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="p-6 space-y-6">
+            {error && (
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 text-destructive text-sm">
+                {error}
+              </div>
+            )}
+
+            {isAnalyzing && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                <p className="text-lg font-medium">Gemini analyse votre style...</p>
+                <p className="text-sm text-muted-foreground">Cela prendra quelques secondes</p>
+              </div>
+            )}
+
+            {userPhoto && !isAnalyzing && (
+              <>
+                <div className="relative">
+                  <img 
+                    src={userPhoto} 
+                    alt="Votre photo" 
+                    className="w-full max-h-64 object-contain rounded-xl bg-accent"
+                  />
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2"
+                    onClick={resetState}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                {styleAnalysis && (
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Sparkles className="h-5 w-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="font-medium text-foreground mb-1">Analyse de votre style</p>
+                        <p className="text-sm text-muted-foreground">{styleAnalysis}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <h3 className="font-semibold text-foreground mb-3">Box recommandées pour vous</h3>
+                  <div className="space-y-3">
+                    {recommendedBoxes.map((box) => (
+                      <div key={box.id} className="bg-background rounded-xl p-4 border border-border hover:border-primary/50 transition-all">
+                        <div className="flex gap-4">
+                          <img src={box.images[0]} alt={box.name} className="w-20 h-20 rounded-lg object-cover" />
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-foreground">{box.name}</h4>
+                            <Badge variant="secondary" className="text-xs mt-1">{box.category}</Badge>
+                            <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{box.description}</p>
+                            <Button 
+                              size="sm" 
+                              className="w-full mt-3"
+                              onClick={() => handleTryOnRecommendedBox(box)}
+                              disabled={isProcessing}
+                            >
+                              {isProcessing ? (
+                                <>
+                                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                  Essayage...
+                                </>
+                              ) : (
+                                <>
+                                  <ImageIcon className="h-3 w-3 mr-1" />
+                                  Essayer cette box
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   if (!selectedBox) return null;
 
   return (
@@ -265,83 +373,7 @@ export const VirtualTryOn = ({ selectedBox, onClose, onProceedToCheckout }: Virt
             </div>
           )}
 
-          {isAnalyzing && (
-            <div className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-              <p className="text-lg font-medium">Gemini analyse votre style...</p>
-              <p className="text-sm text-muted-foreground">Cela prendra quelques secondes</p>
-            </div>
-          )}
-
-          {userPhoto && !selectedBox && recommendedBoxes.length > 0 && !tryOnResult && (
-            <div className="space-y-6">
-              <div className="relative">
-                <img 
-                  src={userPhoto} 
-                  alt="Votre photo" 
-                  className="w-full max-h-64 object-contain rounded-xl bg-accent"
-                />
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  className="absolute top-2 right-2"
-                  onClick={resetState}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {styleAnalysis && (
-                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Sparkles className="h-5 w-5 text-primary mt-0.5" />
-                    <div>
-                      <p className="font-medium text-foreground mb-1">Analyse de votre style</p>
-                      <p className="text-sm text-muted-foreground">{styleAnalysis}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <h3 className="font-semibold text-foreground mb-3">Box recommandées pour vous</h3>
-                <div className="space-y-3">
-                  {recommendedBoxes.map((box) => (
-                    <div key={box.id} className="bg-background rounded-xl p-4 border border-border hover:border-primary/50 transition-all">
-                      <div className="flex gap-4">
-                        <img src={box.images[0]} alt={box.name} className="w-20 h-20 rounded-lg object-cover" />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-foreground">{box.name}</h4>
-                          <Badge variant="secondary" className="text-xs mt-1">{box.category}</Badge>
-                          <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{box.description}</p>
-                          <Button 
-                            size="sm" 
-                            className="w-full mt-3"
-                            onClick={() => handleTryOnRecommendedBox(box)}
-                            disabled={isProcessing}
-                          >
-                            {isProcessing ? (
-                              <>
-                                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                                Essayage...
-                              </>
-                            ) : (
-                              <>
-                                <ImageIcon className="h-3 w-3 mr-1" />
-                                Essayer cette box
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {userPhoto && !tryOnResult && (
+          {userPhoto && selectedBox && !tryOnResult && (
             <div className="space-y-4">
               <div className="relative">
                 <img 
