@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, User, Menu, X, Sparkles, Leaf, Heart, Bell } from "lucide-react";
+import { ShoppingBag, User, Menu, X, Sparkles, Heart, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,25 +28,23 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 glass-effect border-b border-border/50 shadow-sm">
+    <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-3 group"
           >
-            <div className="relative">
-              <Leaf className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
-              <div className="absolute -top-1 -right-1 h-3 w-3 bg-secondary rounded-full animate-pulse" />
-            </div>
-            <div>
-              <span className="font-display text-xl font-semibold text-foreground">
-                ReStyle
-              </span>
-              <span className="hidden md:block text-xs text-muted-foreground">
-                Mode circulaire
-              </span>
+            <div className="relative flex items-center gap-2">
+              <div>
+                <span className="font-display text-xl font-bold text-primary">
+                  OUTFIX
+                </span>
+                <span className="hidden md:block text-xs text-muted-foreground">
+                  Box d'outfit seconde main
+                </span>
+              </div>
             </div>
           </Link>
 
@@ -59,8 +57,8 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
                 className={cn(
                   "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300",
                   location.pathname === link.href
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-foreground/70 hover:text-foreground hover:bg-accent"
+                    ? "bg-secondary text-secondary-foreground shadow-sm"
+                    : "text-foreground/70 hover:text-foreground hover:bg-secondary/10"
                 )}
               >
                 <span className="flex items-center gap-2">
@@ -77,7 +75,7 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
             <Button variant="ghost" size="icon" className="relative hidden sm:flex">
               <Bell className="h-5 w-5" />
               <Badge 
-                className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 bg-secondary text-secondary-foreground text-[10px]"
+                className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 bg-rose text-white text-[10px]"
               >
                 3
               </Badge>
@@ -88,7 +86,7 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
               <ShoppingBag className="h-5 w-5" />
               {cartCount > 0 && (
                 <Badge 
-                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-primary text-primary-foreground text-xs font-semibold"
+                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-secondary text-secondary-foreground text-xs font-semibold"
                 >
                   {cartCount}
                 </Badge>
@@ -105,7 +103,7 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-2">
                   <p className="text-sm font-medium">Jules Ruberti</p>
-                  <p className="text-xs text-muted-foreground">jules@restyle.com</p>
+                  <p className="text-xs text-muted-foreground">jules@outfix.com</p>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Mon Profil</DropdownMenuItem>
@@ -114,10 +112,10 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="flex items-center justify-between">
                   <span className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-primary" />
+                    <Sparkles className="h-4 w-4 text-secondary" />
                     <span>Style Points</span>
                   </span>
-                  <Badge variant="secondary">1,250</Badge>
+                  <Badge className="bg-secondary text-secondary-foreground">1,250</Badge>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Paramètres</DropdownMenuItem>
@@ -153,8 +151,8 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
                   className={cn(
                     "px-4 py-3 rounded-xl text-sm font-medium transition-all",
                     location.pathname === link.href
-                      ? "bg-primary text-primary-foreground"
-                      : "text-foreground/70 hover:bg-accent"
+                      ? "bg-secondary text-secondary-foreground"
+                      : "text-foreground/70 hover:bg-secondary/10"
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -167,7 +165,7 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
               <Link
                 to="/profile"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="px-4 py-3 rounded-xl text-sm font-medium text-foreground/70 hover:bg-accent flex items-center gap-2"
+                className="px-4 py-3 rounded-xl text-sm font-medium text-foreground/70 hover:bg-secondary/10 flex items-center gap-2"
               >
                 <User className="h-4 w-4" />
                 Mon Compte

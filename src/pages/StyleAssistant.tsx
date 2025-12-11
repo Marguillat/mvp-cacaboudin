@@ -228,7 +228,7 @@ const StyleAssistant = () => {
                 <div className="space-y-4">
                   {messages.map((message) => (
                     <div key={message.id} className={cn("flex", message.role === "user" ? "justify-end" : "justify-start")}>
-                      <div className={cn("max-w-[80%] rounded-2xl px-4 py-3", message.role === "user" ? "bg-primary text-primary-foreground" : "bg-accent text-foreground")}>
+                      <div className={cn("max-w-[80%] rounded-2xl px-4 py-3", message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-foreground")}>
                         <p className="text-sm">{message.content}</p>
                         {message.isTyping && (
                           <div className="flex gap-1 mt-2">
