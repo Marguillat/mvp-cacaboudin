@@ -6,6 +6,7 @@ import axios from 'axios';
  */
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
+const USE_DEMO_MODE = import.meta.env.VITE_USE_DEMO_MODE === 'true'; // Mode démo sans appels API
 
 // Protection contre les appels multiples
 let lastCallTime = 0;
@@ -34,6 +35,24 @@ export const analyzeUserStyle = async (imageBase64: string): Promise<{
   error?: string;
 }> => {
   try {
+    // MODE DÉMO : Retourner des résultats simulés sans appeler l'API
+    if (USE_DEMO_MODE) {
+      console.info('🎭 Mode démo activé - Pas d\'appel API réel');
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simuler un délai
+      
+      // Analyse aléatoire pour la démo
+      const demoCategories = ['Casual', 'Classic', 'Vintage', 'Evening', 'Sport', 'Boho'];
+      const randomCategories = demoCategories
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 2);
+      
+      return {
+        success: true,
+        styleAnalysis: `Style décontracté et moderne avec une touche d'élégance. Vous aimez les pièces confortables mais stylées qui reflètent votre personnalité unique.`,
+        recommendedCategories: randomCategories
+      };
+    }
+    
     // Protection anti-spam : vérifier le temps depuis le dernier appel
     const now = Date.now();
     const timeSinceLastCall = now - lastCallTime;
