@@ -41,6 +41,7 @@ export const VirtualTryOn = ({ selectedBox, onClose, onProceedToCheckout }: Virt
         // Si aucune box n'est sélectionnée, analyser le style automatiquement
         if (!selectedBox) {
           setIsAnalyzing(true);
+          setError(null);
           try {
             const analysis = await analyzeUserStyle(base64Image);
             if (analysis.success && analysis.recommendedCategories) {
@@ -52,9 +53,12 @@ export const VirtualTryOn = ({ selectedBox, onClose, onProceedToCheckout }: Virt
               ).slice(0, 3);
               
               setRecommendedBoxes(filtered);
+            } else if (analysis.error) {
+              setError(analysis.error);
             }
           } catch (err) {
             console.error('Erreur d\'analyse:', err);
+            setError("Une erreur s'est produite lors de l'analyse.");
           } finally {
             setIsAnalyzing(false);
           }

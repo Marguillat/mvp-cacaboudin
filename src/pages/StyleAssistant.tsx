@@ -88,7 +88,7 @@ const StyleAssistant = () => {
   }, [messages]);
 
   const addMessage = (message: Omit<Message, "id">) => {
-    const newMessage = { ...message, id: Date.now().toString() };
+    const newMessage = { ...message, id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}` };
     setMessages((prev) => [...prev, newMessage]);
     return newMessage.id;
   };

@@ -93,8 +93,17 @@ export const analyzeUserStyle = async (imageBase64: string): Promise<{
     }
 
     throw new Error('Réponse invalide de Gemini');
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur lors de l\'analyse de style:', error);
+    
+    // Gérer l'erreur 429 (Too Many Requests)
+    if (error.response?.status === 429) {
+      return {
+        success: false,
+        error: 'Limite de requêtes atteinte. Veuillez réessayer dans quelques instants.'
+      };
+    }
+    
     return {
       success: false,
       error: 'Erreur lors de l\'analyse de style'
