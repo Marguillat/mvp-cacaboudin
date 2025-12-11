@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -13,12 +13,19 @@ const buttonVariants = cva(
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-soft hover:shadow-card hover:-translate-y-0.5",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent/10 hover:text-accent",
         link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-elevated hover:shadow-glow hover:-translate-y-1 text-base px-8 py-6",
-        cta: "bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground hover:from-secondary/90 hover:to-secondary/70 shadow-card hover:shadow-elevated hover:-translate-y-0.5",
-        sage: "bg-primary text-primary-foreground hover:bg-primary/80 shadow-soft hover:shadow-card hover:-translate-y-0.5",
-        pill: "rounded-full bg-accent text-accent-foreground hover:bg-primary hover:text-primary-foreground",
+        // Hero button - Yellow with navy text (main CTA)
+        hero: "bg-secondary text-secondary-foreground hover:bg-yellow-light shadow-elevated hover:shadow-glow hover:-translate-y-1 text-base px-8 py-6 font-bold",
+        // CTA gradient - Yellow to Orange
+        cta: "bg-gradient-to-r from-secondary to-accent text-primary-foreground hover:from-yellow-light hover:to-orange-light shadow-card hover:shadow-elevated hover:-translate-y-0.5 font-bold",
+        // Rose accent button
+        rose: "bg-rose text-white hover:bg-rose-light shadow-soft hover:shadow-glow-rose hover:-translate-y-0.5",
+        // Green eco button
+        eco: "bg-green text-white hover:bg-green-light shadow-soft hover:shadow-card hover:-translate-y-0.5",
+        // Navy primary
+        navy: "bg-navy text-white hover:bg-navy-light shadow-soft hover:shadow-card hover:-translate-y-0.5",
+        pill: "rounded-full bg-secondary/10 text-secondary-foreground hover:bg-secondary hover:text-secondary-foreground border border-secondary/30",
         glass: "bg-card/60 backdrop-blur-md border border-border/50 hover:bg-card/80 text-foreground",
       },
       size: {
