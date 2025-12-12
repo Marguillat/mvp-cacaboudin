@@ -21,10 +21,8 @@ const Navbar = ({ cartCount = 0 }: NavbarProps) => {
   const location = useLocation();
 
   const navLinks = [
-    { href: "/", label: "Accueil" },
-    { href: "/catalog", label: "Catalogue" },
+    { href: "/", label: "Catalogue" },
     { href: "/style-assistant", label: "Assistant Style", icon: Sparkles },
-    { href: "/favorites", label: "Favoris", icon: Heart },
   ];
 
   return (
